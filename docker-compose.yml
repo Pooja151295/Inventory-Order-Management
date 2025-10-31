@@ -1,0 +1,77 @@
+# Laravel Local Development Environment
+# This docker-compose configuration sets up a complete development stack for Laravel applications
+
+services:
+  #Database Service - PostgreSQL for persistent data storage
+  db:
+    image: mysql:8.0 # Using MySQL v8.0
+    container_name: laravel_db
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./dev-data/mysql:/var/lib/mysql # Persistent storage for database
+    ports:
+      - "3306:3306" # Standard MySQL port
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_USER: ${DB_USERNAME:-laravel}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-laravel}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret} # Root password for MySQL
+    networks:
+      - laravel_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      retries: 5
+      timeout: 5s
+  #PHP Service - Main Laravel application running on PHP-FPM
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/local/php/Dockerfile # Ensure this Dockerfile installs pdo_mysql
+    container_name: laravel_app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/app
+    expose:
+      - "9000" # Expose PHP-FPM port internally
+    ports:
+      - "5173:5173" # For Vite/Laravel hot module replacement (HMR)
+    command: ["php-fpm"]
+    volumes:
+      - ./:/var/www/app # Mount project directory
+    networks:
+      - laravel_network
+    depends_on:
+      - db
+  # Web Server Service - Nginx
+  nginx:
+    image: nginx:stable-alpine # Lightweight Nginx image
+    container_name: laravel_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80" # Standard HTTP port for web access
+    volumes:
+      - ./:/var/www/app # Mount project root
+      - ./docker/local/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro # Nginx configuration
+    networks:
+      - laravel_network
+    depends_on:
+      - app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: laravel_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80" # Web interface port
+    environment:
+      PMA_HOST: db # Link to the 'db' service name
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret}
+    networks:
+      - laravel_network
+    depends_on:
+      - db
+  # Docker Networks - Network configuration for container communication
+networks:
+  laravel_network:
+    driver: bridge # Standard bridge network for container communication
