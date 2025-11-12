@@ -1,5 +1,20 @@
-# Inventory Management System (Multi-Tenant E-commerce API) 🛍️
+# 📦 Inventory & Order Management System (IMS) 🛍️
 This project is a multi-tenant backend API for inventory and order management, built using Laravel and containerized with Docker. It securely isolates data, ensuring each shop (tenant) can only access its own products and orders.
+
+# ⚙️ Requirements
+Ensure your system meets the following prerequisites before installation:
+
+PHP (v8.1 or higher)
+
+Composer (Package Manager for PHP)
+
+MySQL or PostgreSQL (Database)
+
+Node.js & npm (For frontend asset compilation)
+
+Laravel (v9 or v10 recommended)
+
+Git
 
 # 🚀 Key Features
 Multi-Tenancy: Data isolation enforced at the Eloquent model layer using a BelongsToTenant trait and Global Scopes.
@@ -12,21 +27,10 @@ APIs: Complete CRUD for Products and read/create for Orders.
 
 UI (Basic): Simple administrative UI using Laravel Breeze (Blade/Alpine.js) for quick testing of CRUD and multi-tenancy.
 
-# ⚙️ Prerequisites
-Before you begin, ensure you have the following installed on your local machine:
-
-Docker & Docker Compose
-
-Git
-
-Node.js & npm (Required for compiling the UI assets)
-
 # 💻 Setup and Installation
 Follow these steps to get the application running locally via Docker.
 
 ## Step 1: Clone and Build
-Bash
-
 # Clone the repository
 ```bash
 git clone https://github.com/Pooja151295/Inventory-Order-Management.git
@@ -60,8 +64,6 @@ docker exec -it laravel_app php artisan db:seed
 # Step 3: Compile Assets (Frontend)
 Compile the required CSS and JavaScript assets. This should be run on your host machine.
 
-Bash
-
 # Install Node dependencies
 ```bash
  npm install
@@ -76,7 +78,18 @@ docker run --rm -v ${PWD}:/app -w /app node:lts-alpine npm install
 docker run --rm -v ${PWD}:/app -w /app node:lts-alpine npm run build
 ```
 # 🌐 Access and Credentials
-The application is now accessible via the browser and Postman.
+The application can be accessed through a web browser or via Postman.
+To use the API through Postman:
+
+Log in using the provided API endpoint
+
+Obtain the authentication token from the login response
+
+In Postman, open the Authorization tab and select Bearer Token
+
+Paste the token into the field to authenticate your requests ( Bearer {token} )
+
+You can now access all available API endpoints
 
 ## Component	URL	Sample Credentials
 Web UI (Login)	http://localhost:8000/login	Shop A Admin: shopa@example.com / password <br>
@@ -104,3 +117,10 @@ To stop and remove all Docker containers, networks, and volumes (optional, use w
 ```bash
 docker-compose down -v
 ```
+
+# 📧 Contact / Maintainer Info
+For questions, issues, or contributions, please contact the maintainer:
+
+Maintainer: Pooja Langalia
+
+GitHub Profile: Pooja151295
