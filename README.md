@@ -4,17 +4,17 @@ This project is a multi-tenant backend API for inventory and order management, b
 # ⚙️ Requirements
 Ensure your system meets the following prerequisites before installation:
 
-PHP (v8.1 or higher)
+- PHP (v8.1 or higher)
 
-Composer (Package Manager for PHP)
+- Composer (Package Manager for PHP)
 
-MySQL or PostgreSQL (Database)
+- MySQL or PostgreSQL (Database)
 
-Node.js & npm (For frontend asset compilation)
+- Node.js & npm (For frontend asset compilation)
 
-Laravel (v9 or v10 recommended)
+- Laravel (v10+ recommended)
 
-Git
+- Git
 
 # 🚀 Key Features
 Multi-Tenancy: Data isolation enforced at the Eloquent model layer using a BelongsToTenant trait and Global Scopes.
@@ -37,8 +37,9 @@ git clone https://github.com/Pooja151295/Inventory-Order-Management.git
 cd InventoryManagement
 ```
 # Create the environment file
+```bash
 cp .env.example .env
-
+```
 # Build and run the containers (can take a few minutes the first time)
 
 ```bash
@@ -81,13 +82,13 @@ docker run --rm -v ${PWD}:/app -w /app node:lts-alpine npm run build
 The application can be accessed through a web browser or via Postman.
 To use the API through Postman:
 
-Log in using the provided API endpoint
+- Log in using the provided API endpoint
 
-Obtain the authentication token from the login response
+- Obtain the authentication token from the login response
 
-In Postman, open the Authorization tab and select Bearer Token
+- In Postman, open the Authorization tab and select Bearer Token
 
-Paste the token into the field to authenticate your requests ( Bearer {token} )
+- Paste the token into the field to authenticate your requests ( Bearer {token} )
 
 You can now access all available API endpoints
 
@@ -121,6 +122,6 @@ docker-compose down -v
 # 📧 Contact / Maintainer Info
 For questions, issues, or contributions, please contact the maintainer:
 
-Maintainer: Pooja Langalia
+- Maintainer: Pooja Langalia
 
-GitHub Profile: Pooja151295
+- GitHub Profile: Pooja151295
