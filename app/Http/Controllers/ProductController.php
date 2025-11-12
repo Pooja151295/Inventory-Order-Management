@@ -32,7 +32,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd('hehehhe');
         Product::create($request->all());
 
         return redirect()->route('products.index')->with('status', 'Product created successfully!');
@@ -49,7 +48,7 @@ class ProductController extends Controller
     /**
      * Update the specified product.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
         dd('hi');
         // $request->validate([
