@@ -62,6 +62,10 @@ docker exec -it laravel_app php artisan migrate
 ```bash
 docker exec -it laravel_app php artisan db:seed
 ```
+# Start queue worker
+```bash
+docker exec -it laravel_app php artisan queue:work
+```
 # Step 3: Compile Assets (Frontend)
 Compile the required CSS and JavaScript assets. This should be run on your host machine.
 
