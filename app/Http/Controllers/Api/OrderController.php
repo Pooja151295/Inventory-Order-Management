@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Responses\ApiResponse;
+use App\Jobs\PlaceOrderJob;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Support\Facades\Log;
@@ -68,23 +69,24 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         try {
-            $order = $this->orderService->placeOrder(
+            PlaceOrderJob::dispatch(
                 $request->user(),
                 $request->validated('items')
             );
 
-            return ApiResponse::success(new OrderResource($order), 'Order placed successfully', 201);
+            return ApiResponse::success(
+                null,
+                'Order is being processed. You will be notified once it is completed.',
+                202
+            );
+
         } catch (\Exception $e) {
-            Log::error('Order placement failed: '.$e->getMessage(), [
+            Log::error('Order queue dispatch failed: '.$e->getMessage(), [
                 'user_id' => $request->user()->id,
             ]);
 
-            if (str_contains($e->getMessage(), 'stock') || str_contains($e->getMessage(), 'shop')) {
-                return ApiResponse::error($e->getMessage(), null, 409);
-            }
-
             return ApiResponse::error(
-                'An internal error occurred during order placement.',
+                'Failed to queue order for processing.',
                 $e->getMessage(),
                 500
             );

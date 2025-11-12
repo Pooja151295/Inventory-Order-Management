@@ -15,12 +15,18 @@ class DevelopmentSeeder extends Seeder
      */
     public function run(): void
     {
-        $shopA = Shop::factory()->create(['name' => 'Widget Central']);
+        User::factory()->create([
+            'shop_id' => null,
+            'name' => 'Global Super Admin',
+            'email' => 'superadmin@system.com',
+            'password' => Hash::make('password'),
+        ]);
 
+        $shopA = Shop::factory()->create(['name' => 'Widget Central']);
         User::factory()->create([
             'shop_id' => $shopA->id,
             'name' => 'Shop A Admin',
-            'email' => 'shopa@example.com',
+            'email' => 'shopa@system.com',
             'password' => Hash::make('password'),
         ]);
 
@@ -31,7 +37,7 @@ class DevelopmentSeeder extends Seeder
         User::factory()->create([
             'shop_id' => $shopB->id,
             'name' => 'Shop B Admin',
-            'email' => 'shopb@example.com',
+            'email' => 'shopb@system.com',
             'password' => Hash::make('password'),
         ]);
 

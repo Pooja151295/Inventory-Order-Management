@@ -48,23 +48,23 @@ class ProductController extends Controller
     /**
      * Update the specified product.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            // Unique rule scoped by shop_id, and ignoring the current product's ID
-            'sku' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('products')->where(function ($query) use ($request) {
-                    return $query->where('shop_id', $request->user()->shop_id);
-                })->ignore($product->id),
-            ],
-            'price' => 'required|numeric|min:0.01',
-            'stock' => 'required|integer|min:0',
-        ]);
-
+        dd('hi');
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'sku' => [
+        //         'required',
+        //         'string',
+        //         'max:255',
+        //         Rule::unique('products')->where(function ($query) use ($request) {
+        //             return $query->where('shop_id', $request->user()->shop_id);
+        //         })->ignore($product->id),
+        //     ],
+        //     'price' => 'required|numeric|min:0.01',
+        //     'stock' => 'required|integer|min:0',
+        // ]);
+        dd($request->all());
         $product->update($request->all());
 
         return redirect()->route('products.index')->with('status', 'Product updated successfully!');
